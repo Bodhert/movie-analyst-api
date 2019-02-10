@@ -1,25 +1,26 @@
 const express = require('express');
+const mysql = require('mysql');
+
 const app = express();
+const port = process.env.PORT || 3000
 
-const port = (process.env.PORT || 3000)
+require('dotenv').config()
 
-//var mysql = require("mysql");
-//var connection = mysql.createConnection({
-//  host     : process.env.DB_HOST || 'mysql-test.cxrpknmq0hfi.us-west-2.rds.amazonaws.com',
-//  user     : process.env.DB_USER || 'applicationuser',
-//  password : process.env.DB_PASS || 'applicationuser',
-//  database : process.env.DB_NAME || 'movie_db'
-//});
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST || 'mysql-test.cxrpknmq0hfi.us-west-2.rds.amazonaws.com',
+  user: process.env.DB_USER || 'applicationuser',
+  password: process.env.DB_PASS || 'applicationuser',
+  database: process.env.DB_NAME || 'movie_db'
+});
 
-//connection.connect();
-
-//function getMovies(callback) {    
-//        connection.query("SELECT * FROM movie_db.movies",
-//            function (err, rows) {
-//                callback(err, rows); 
-//            }
-//        );    
-//}
+connection.connect(function (error) {
+  if (error) {
+    console.log('eye with that my hand, error connecting to the DB')
+    console.log(error)
+  } else {
+    console.log('the good, db is conected')
+  }
+});
 
 //Testing endpoint
 app.get('/', function (req, res) {
@@ -41,15 +42,6 @@ app.get('/movies', function (req, res) {
 
   res.json(movies);
 })
-
-//app.get('/', function(req, res, next) {   
-//now you can call the get-driver, passing a callback function
-//    getMovies(function (err, moviesResult){ 
-//you might want to do something is err is not null...      
-//       res.json(moviesResult);
-
-//    });
-//});
 
 // Implement the reviewers API endpoint
 app.get('/reviewers', function (req, res) {
@@ -90,6 +82,22 @@ app.get('/pending', function (req, res) {
   ]
   res.json(pending);
 })
+
+app.get('/', function (req, res, next) {
+  //now you can call the get-driver, passing a callback function
+  getMovies(function (err, moviesResult) {
+    //you might want to do something is err is not null...      
+    res.json(moviesResult);
+  });
+});
+
+function getMovies(callback) {
+  connection.query("SELECT * FROM movie_db.movies",
+    function (err, rows) {
+      callback(err, rows);
+    }
+  );
+}
 
 app.listen(port);
 console.log("server listening through port: " + port);
