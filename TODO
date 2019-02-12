@@ -1,0 +1,9 @@
+###
+creates my sql from a container
+docker-compose -f stack.yml up
+
+
+table_creation_and_inserts.sql
+### populates de db from scripts
+mysql -uroot -pexample < data_mode/table_creation_and_inserts.sql
+## if docker, has to be run from the yml https://stackoverflow.com/questions/29600369/starting-and-populating-a-postgres-container-in-docker
