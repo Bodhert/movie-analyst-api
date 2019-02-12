@@ -7,3 +7,12 @@ table_creation_and_inserts.sql
 ### populates de db from scripts
 mysql -uroot -pexample < data_mode/table_creation_and_inserts.sql
 ## if docker, has to be run from the yml https://stackoverflow.com/questions/29600369/starting-and-populating-a-postgres-container-in-docker
+
+
+##Docker image build
+docker build -t bodhert/movie-analyst-api .
+docker images
+docker run -p 3000:3000 -d bodhert/movie-analyst-api
+# test if the app is healty
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000
+
