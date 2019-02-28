@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const http = require('http');
+const request = require('request');
 
 require('dotenv').config()
 
@@ -60,18 +61,15 @@ function getAllfromTable(table, callback) {
 
 app.get('/ip', function (req, res, next) {
 
-  http.get('http://169.254.169.254/latest/meta-data/local-hostname', (resp) => {
+http.get('http://169.254.169.254/latest/meta-data/local-hostname', (resp) => {
     let data = '';
 
-    // A chunk of data has been recieved.
     resp.on('data', (chunk) => {
       data += chunk;
     });
 
-    // The whole response has been received. Print out the result.
     resp.on('end', () => {
-      console.log(JSON.parse(data).explanation);
-      res.json(data.explanation);
+      res.json(data);
     });
 
   }).on("error", (err) => {
