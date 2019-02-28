@@ -60,23 +60,25 @@ function getAllfromTable(table, callback) {
 
 app.get('/ip', function (req, res, next) {
 
-  const req = http.request(options, (res) => {
-    console.log(`STATUS: ${res.statusCode}`);
-    console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-    res.setEncoding('utf8');
-    res.on('data', (chunk) => {
-      console.log(`BODY: ${chunk}`);
+  http.get('http://169.254.169.254/latest/meta-data/local-hostname', (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
     });
 
-    res.on('end', () => {
-      console.log('No more data in response.');
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      console.log(JSON.parse(data).explanation);
+      res.json(data.explanation);
     });
 
-    req.on('error', (e) => {
-      console.error(`problem with request: ${e.message}`);
-    });
-    
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+    res.json('cannot get aws metadata, error: ' + err.message);
   });
+
 });
 
 app.listen(port);
