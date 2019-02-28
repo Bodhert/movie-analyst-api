@@ -1,5 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
+const http = require('http');
+
 require('dotenv').config()
 
 const app = express();
@@ -28,24 +30,24 @@ app.get('/', function (req, res) {
 })
 
 app.get('/reviewers', function (req, res) {
-  getAllfromTable('reviewer',function (reviewsResult) {
+  getAllfromTable('reviewer', function (reviewsResult) {
     res.json(reviewsResult);
   });
 })
 
 app.get('/publications', function (req, res) {
-  getAllfromTable('publication',function (publicationsResult) {
+  getAllfromTable('publication', function (publicationsResult) {
     res.json(publicationsResult);
   });
 })
 
 app.get('/movies', function (req, res, next) {
-  getAllfromTable('moviereview',function (moviesResult) {
+  getAllfromTable('moviereview', function (moviesResult) {
     res.json(moviesResult);
   });
 });
 
-function getAllfromTable(table,callback) {
+function getAllfromTable(table, callback) {
   connection.query(`SELECT * FROM ${table}`,
     function (err, result) {
       if (err) {
@@ -55,6 +57,27 @@ function getAllfromTable(table,callback) {
     }
   );
 }
+
+app.get('/ip', function (req, res, next) {
+
+  const req = http.request(options, (res) => {
+    console.log(`STATUS: ${res.statusCode}`);
+    console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
+    res.setEncoding('utf8');
+    res.on('data', (chunk) => {
+      console.log(`BODY: ${chunk}`);
+    });
+
+    res.on('end', () => {
+      console.log('No more data in response.');
+    });
+
+    req.on('error', (e) => {
+      console.error(`problem with request: ${e.message}`);
+    });
+    
+  });
+});
 
 app.listen(port);
 console.log("server listening through port: " + port);
