@@ -4,7 +4,8 @@
   "description": "Backend API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exit",
+    "test-jenkins": "JUNIT_REPORT_PATH=/test-results.xml mocha --colors --reporter mocha-jenkins-reporter",
+    "test": "JUNIT_REPORT_PATH=testResults/test-results.xml mocha --exit --colors --reporter mocha-jenkins-reporter",
     "start": "node server.js"
   },
   "repository": {

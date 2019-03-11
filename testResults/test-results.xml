@@ -1,0 +1,6 @@
+<testsuites name="Mocha Tests">
+  <testsuite name="API /GET home" tests="1" errors="0" failures="0" skipped="0" timestamp="2019-03-11T15:23:40" time="0.299">
+    <testcase classname="API /GET home" name="it should GET any reply" time="0.296">
+    </testcase>
+  </testsuite>
+</testsuites>
