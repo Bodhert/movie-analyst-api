@@ -7,9 +7,10 @@ require('dotenv').config()
 
 const app = express();
 const port = process.env.PORT || 3000
+let connection
 
 if (process.env.NODE_ENV != 'test') {
-  const connection = mysql.createConnection({
+  connection = mysql.createConnection({
     host: process.env.DB_HOST || 'mysql-test.cxrpknmq0hfi.us-west-2.rds.amazonaws.com',
     user: process.env.DB_USER || 'applicationuser',
     password: process.env.DB_PASS || 'applicationuser',
