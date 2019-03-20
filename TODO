@@ -18,7 +18,3 @@ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET
 
 ##
 modify this line to test jenkins poll plugin 
-gsdfg
-sdsdasdasd
-sdfsad
-dsfsadf
